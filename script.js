@@ -1,7 +1,7 @@
 // Main controler
 const controler = document.querySelector(".controler")
 const addTaskButton = document.querySelector(".add-btn")
-// UserInput 
+// UserInput
 let taskNameInput1 = document.querySelector(".userInput")
 let taskPrioInput1 = document.querySelector(".prioInput")
 let taskEndInput1 = document.querySelector(".endInput")
