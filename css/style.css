@@ -1,0 +1,294 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    list-style: none;
+    font-family: 'Poppins', sans-serif;
+}
+
+:root {
+    --border-radius: 10px;
+    --margin: 10px 0px;
+    --font-size: 1.4em;
+    --transition: 0.2s linear;
+}
+
+
+body {
+    font-size: 10px;
+}
+
+.wrapper {
+    margin: 45px auto;
+    width: 550px;
+    z-index: 101;
+}
+
+/* Ciemny overlay nakładany przy edycji taska */
+.overlay {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    opacity: 0.1;
+    top: 0;
+    left: 0;
+    transition: 0.2s linear;
+    z-index: -1;
+}
+
+.overlayOn {
+    opacity: 0.2;
+    background-color: black;
+    z-index: 102;
+}
+
+/* Background na samej górze strony */
+.background {
+    position: relative;
+    margin: 25px auto 0px auto;
+    height: 15vh;
+    width: 900px;
+    min-height: 70px;
+    justify-content: left;
+    align-items: flex-start;
+    background: linear-gradient(to right, #e8cbc09c, #636fa42c), url(background2.jpg);
+    background-size: cover;
+    background-position: center;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+    border-radius: 5px;
+
+}
+
+/* Sekcja odpowiadająca za dodwanie tasków  */
+.controler {
+    position: relative;
+    display: flex;
+    height: 38px;
+    width: 100%;
+    padding: 0 10px;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: var(--margin);
+    border-top-left-radius: var(--border-radius);
+    border-bottom-left-radius: var(--border-radius);
+    border-top-right-radius: var(--border-radius);
+    border-bottom-right-radius: var(--border-radius);
+    box-shadow: rgba(0, 0, 0, 0.09) 0px 3px 12px;
+    transition: 0.2s ease-in-out;
+    overflow: hidden;
+    background-color: transparent;
+}
+
+.controlerGrow {
+    height: 100px;
+}
+
+/* UserInput który jest traktowany jako treść taska */
+.userInput {
+    height: 40px;
+    width: 80%;
+    border: transparent;
+    /* border-top-left-radius: var(--border-radius);
+    border-bottom-left-radius: var(--border-radius); */
+    font-size: 1.5em;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.096);
+}
+
+.userInput:focus,
+input:focus {
+    outline: none;
+}
+
+.prio-container {
+    display: flex;
+    width: 50%;
+    flex-direction: column;
+    align-items: center;
+    opacity: 0.5;
+}
+
+.prioInput {
+    border: transparent;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.096);
+    text-align: center;
+}
+
+.prioInput:focus {
+    outline: none;
+}
+
+.end-date-container {
+    display: flex;
+    width: 50%;
+    flex-direction: column;
+    align-items: center;
+    opacity: 0.5;
+}
+
+.endInput {
+    border: transparent;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.096);
+    text-align: center;
+}
+
+
+
+
+/* Button zarządzający dodawaniem taska do całej listy */
+.add-btn {
+    height: 40px;
+    background-color: white;
+    border: transparent;
+    border-top-right-radius: var(--border-radius);
+    border-bottom-right-radius: var(--border-radius);
+    cursor: pointer;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-size: var(--font-size);
+    transition: var(--transition);
+}
+
+.add-btn i {
+    transform: translateY(0px);
+    transition: var(--transition);
+}
+
+.add-btn:hover i {
+    transform: translateY(4px);
+}
+
+
+#lista {
+    position: relative;
+    margin: var(--margin);
+    z-index: 102;
+}
+
+ul {
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+
+.newDivContainer {
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 50px;
+    margin-top: 15px;
+    overflow: hidden;
+    box-shadow: rgba(0, 0, 0, 0.09) 0px 3px 12px;
+    border-radius: var(--border-radius);
+    background-color: transparent;
+}
+
+.newDivContainer .active {
+    background-color: white;
+    z-index: 101;
+}
+
+.newDivContainer input {
+    font-family: 'Montserrat', sans-serif;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    width: 90%;
+    font-size: 1.6em;
+    letter-spacing: 1px;
+    transition: 0.5s ease-in-out;
+    border: transparent;
+    background-color: transparent;
+}
+
+.newDivContainer button {
+    background-color: transparent;
+    border: transparent;
+}
+
+.newDivContainer .mark-button {
+    margin-right: 10px;
+    margin-left: 10px;
+    color: #6c757d;
+}
+
+
+.newDivContainer .edit-button {
+    margin-right: 10px;
+    margin-left: 15px;
+}
+
+.newDivContainer .confirm-edit-button {
+    margin-right: 10px;
+}
+
+
+.newDivContainer i {
+    z-index: 100;
+    cursor: pointer;
+    transition: 0.8s ease-in-out;
+    font-size: 1.1em;
+}
+
+
+.date-of-creation {
+    position: absolute;
+    bottom: 0;
+    right: 10px;
+    letter-spacing: 1px;
+    opacity: 0.4;
+}
+
+.hideElement {
+    display: none;
+}
+
+
+/* bottom */
+.summary {
+    position: relative;
+    display: none;
+    height: 20px;
+    padding: 20px 10px;
+    align-items: center;
+    margin-top: 25px;
+    justify-content: space-between;
+    box-shadow: rgba(0, 0, 0, 0.09) 0px 3px 12px;
+    border-radius: var(--border-radius);
+    background-color: transparent;
+}
+
+.summaryOn {
+    display: flex;
+}
+
+.how-many-items,
+.how-many-done,
+.how-many-undone {
+    opacity: 0.5;
+    letter-spacing: 1px;
+    font-size: 1.1em;
+}
+
+.activeInSummary {
+    color: var(--color);
+    font-weight: bold;
+}
+
+.clear-btn {
+    right: 10px;
+    opacity: 0.5;
+    background-color: transparent;
+    letter-spacing: 1px;
+    font-size: var(--font-size);
+    text-transform: uppercase;
+    border: transparent;
+    cursor: pointer;
+    transition: 0.2s linear;
+}
+
+.clear-btn:hover {
+    color: var(--color);
+}
