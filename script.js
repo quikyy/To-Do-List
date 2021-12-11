@@ -176,6 +176,7 @@ function editTask(e) {
 
                         date_edited.innerText = `Edited: ${taskList[objectInList].taskEditDate}`;
                         clearListButton.style.pointerEvents = ""
+                        taskContainer.style.backgroundColor = ""
                         overlay.removeEventListener("click", exitOverlay)
                     }
                 }

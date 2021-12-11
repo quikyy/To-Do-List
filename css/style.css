@@ -11,13 +11,27 @@
 :root {
     --border-radius: 10px;
     --margin: 10px 0px;
-    --font-size: 1.4em;
-    --transition: 0.2s linear;
+    --fontSizeDefualt: 10px;
+    --transition: 0.2s ease-in-out;
+
+    /* overlay */
+    --overlayColor: #03071e56;
+
+    /* add / clear */
+    --addClearSize: 1.4em;
+    --addColor: #023e8a;
+
+    /* mark button */
+    --markColor: #fca311;
+
+    /* edit remove */
+    --editRemoveColor: #023e8a;
+    --editRemoveColorHover: ;
 }
 
 
 body {
-    font-size: 10px;
+    font-size: var(--fontSizeDefualt);
 }
 
 .wrapper {
@@ -31,16 +45,16 @@ body {
     position: fixed;
     width: 100%;
     height: 100%;
-    opacity: 0.1;
+    opacity: 0;
     top: 0;
     left: 0;
-    transition: 0.2s linear;
+    transition: var(--transition);
     z-index: -1;
 }
 
 .overlayOn {
-    opacity: 0.2;
-    background-color: black;
+    opacity: 1;
+    background-color: var(--overlayColor);
     z-index: 102;
 }
 
@@ -61,7 +75,7 @@ body {
 
 }
 
-/* Sekcja odpowiadająca za dodwanie tasków  */
+
 .controler {
     position: relative;
     display: flex;
@@ -85,13 +99,10 @@ body {
     height: 100px;
 }
 
-/* UserInput który jest traktowany jako treść taska */
 .userInput {
     height: 40px;
     width: 80%;
     border: transparent;
-    /* border-top-left-radius: var(--border-radius);
-    border-bottom-left-radius: var(--border-radius); */
     font-size: 1.5em;
     border-bottom: 1px solid rgba(0, 0, 0, 0.096);
 }
@@ -133,10 +144,6 @@ input:focus {
     text-align: center;
 }
 
-
-
-
-/* Button zarządzający dodawaniem taska do całej listy */
 .add-btn {
     height: 40px;
     background-color: white;
@@ -146,17 +153,19 @@ input:focus {
     cursor: pointer;
     letter-spacing: 2px;
     text-transform: uppercase;
-    font-size: var(--font-size);
+    font-size: var(--addClearSize);
     transition: var(--transition);
+    color: var(--addColor);
 }
 
 .add-btn i {
     transform: translateY(0px);
     transition: var(--transition);
+    font-weight: bold;
 }
 
 .add-btn:hover i {
-    transform: translateY(4px);
+    transform: translateY(3px);
 }
 
 
@@ -198,7 +207,6 @@ ul {
     width: 90%;
     font-size: 1.6em;
     letter-spacing: 1px;
-    transition: 0.5s ease-in-out;
     border: transparent;
     background-color: transparent;
 }
@@ -211,25 +219,34 @@ ul {
 .newDivContainer .mark-button {
     margin-right: 10px;
     margin-left: 10px;
-    color: #6c757d;
+    color: var(--markColor);
 }
 
+.newDivContainer .remove-button {
+    color: var(--editRemoveColor);
+}
 
 .newDivContainer .edit-button {
     margin-right: 10px;
     margin-left: 15px;
+    color: var(--editRemoveColor);
+    transform: rotate(0deg);
 }
 
 .newDivContainer .confirm-edit-button {
     margin-right: 10px;
+    color: var(--editRemoveColor);
 }
 
 
 .newDivContainer i {
-    z-index: 100;
     cursor: pointer;
-    transition: 0.8s ease-in-out;
     font-size: 1.1em;
+    transition: 0.4s ease-in-out;
+}
+
+.newDivContainer .remove-button i:hover , .edit-button i:hover {
+    color: var(--markColor);
 }
 
 
@@ -282,13 +299,13 @@ ul {
     opacity: 0.5;
     background-color: transparent;
     letter-spacing: 1px;
-    font-size: var(--font-size);
+    font-size: var(--addClearSize);
     text-transform: uppercase;
     border: transparent;
     cursor: pointer;
-    transition: 0.2s linear;
+    transition: var(--transition)
 }
 
 .clear-btn:hover {
-    color: var(--color);
+    color: var(--addColor);
 }
