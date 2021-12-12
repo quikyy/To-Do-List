@@ -35,9 +35,12 @@ function getLocalStorage() {
 function createNewTask() {
     let taskNameInput = document.querySelector(".userInput").value;
     let taskPrioInput = document.querySelector(".prioInput").value;
-    if (taskNameInput == "" || taskNameInput.charAt(0) == " ") {
+    if (taskNameInput == "") {
         return
     } else if (taskNameInput != "") {
+        if (taskNameInput.charAt(0) == " ") {
+            taskNameInput = taskNameInput.trimLeft();
+        }
         let newTask = {
             taskState: 0,
             taskName: taskNameInput,
@@ -157,6 +160,9 @@ function editTask(e) {
             for (let i = 0; i < taskList.length; i++) {
                 if (taskList[i].taskId == findTaskId) {
                     if (userInput.value != "") {
+                        if (userInput.value.charAt(0) == " ") {
+                            userInput.value = userInput.value.trimLeft();
+                        }
                         editFlag = false;
                         objectInList = taskList.indexOf(taskList[i])
                         taskList[objectInList].taskName = userInput.value.charAt(0).toUpperCase() + userInput.value.slice(1);
@@ -221,19 +227,37 @@ function removeTask(e) {
 
 function markDone(e) {
     let taskContainer = e.target.parentNode.parentNode;
-    let doneBtn = taskContainer.querySelector(".mark-button")
     let findTaskId = taskContainer.dataset.id;
-    let objectInList = null;
+    let findState = taskContainer.dataset.state;
 
-    for (let i = 0; i < taskList.length; i++) {
-        if (taskList[i].taskId == findTaskId) {
-            objectInList = taskList.indexOf(taskList[i])
-            taskList[objectInList].taskState = 1;
-            taskContainer.dataset.state = 1;
-            doneBtn.innerHTML = `<i class="fas fa-check-circle"></i>`
+    if (findState == 0) {
+        let doneBtn = taskContainer.querySelector(".mark-button")
+        for (let i = 0; i < taskList.length; i++) {
+            if (taskList[i].taskId == findTaskId) {
+                taskList[taskList.indexOf(taskList[i])].taskState = 1;
+                taskContainer.dataset.state = 1;
+                doneBtn.innerHTML = `<i class="fas fa-check-circle"></i>`
+                localStorage.setItem("taskList", JSON.stringify(taskList));
+                updateSummary();
+                doneBtn.addEventListener("click", markDone)
+                taskContainer = null;
+            }
         }
-        localStorage.setItem("taskList", JSON.stringify(taskList));
-        updateSummary();
+
+    } else if (findState == 1) {
+        let doneBtn = taskContainer.querySelector(".mark-button")
+        for (let i = 0; i < taskList.length; i++) {
+            if (taskList[i].taskId == findTaskId) {
+                taskList[taskList.indexOf(taskList[i])].taskState = 0;
+                taskContainer.dataset.state = 0;
+                doneBtn.innerHTML = `<i class="far fa-check-circle"></i>`
+                localStorage.setItem("taskList", JSON.stringify(taskList));
+                updateSummary();
+
+                doneBtn.addEventListener("click", markDone)
+                taskContainer = null;
+            }
+        }
     }
 }
 
@@ -277,7 +301,6 @@ function generateEndDate() {
     let minute = dateVal.getMinutes();
     let properDate = `${date}.${month}.${year}, ${hour}:${minute}`
     return properDate;
-
 }
 
 function clearTasks() {
