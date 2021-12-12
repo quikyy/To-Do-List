@@ -9,6 +9,7 @@ let taskEndInput1 = document.querySelector(".endInput")
 const ulList = document.querySelector("ul");
 // Summary
 const summaryDiv = document.querySelector(".summary")
+const allViewBtn = [...document.querySelectorAll(".summary span")]
 const clearListButton = document.getElementById("clear")
 const howManyTotal = document.querySelector(".how-many-items")
 const howManyUnDone = document.querySelector(".how-many-undone")
@@ -83,7 +84,7 @@ function taskTemplate(taskState, taskName, taskPrio, taskStartDate, taskEditDate
         mark.innerHTML = `<i class="far fa-check-circle"></i>`
     }
     taskContainer.appendChild(mark);
-    const allMarkBtn = document.querySelectorAll(".newDivContainer .mark-button i")
+    const allMarkBtn = [...document.querySelectorAll(".newDivContainer .mark-button")]
     allMarkBtn.forEach(btn => btn.addEventListener("click", markDone))
 
     //Task value
@@ -229,36 +230,29 @@ function markDone(e) {
     let taskContainer = e.target.parentNode.parentNode;
     let findTaskId = taskContainer.dataset.id;
     let findState = taskContainer.dataset.state;
-
+    let doneBtn = taskContainer.querySelector(".mark-button")
     if (findState == 0) {
-        let doneBtn = taskContainer.querySelector(".mark-button")
         for (let i = 0; i < taskList.length; i++) {
             if (taskList[i].taskId == findTaskId) {
                 taskList[taskList.indexOf(taskList[i])].taskState = 1;
                 taskContainer.dataset.state = 1;
                 doneBtn.innerHTML = `<i class="fas fa-check-circle"></i>`
                 localStorage.setItem("taskList", JSON.stringify(taskList));
-                updateSummary();
-                doneBtn.addEventListener("click", markDone)
                 taskContainer = null;
+
             }
         }
-
     } else if (findState == 1) {
-        let doneBtn = taskContainer.querySelector(".mark-button")
         for (let i = 0; i < taskList.length; i++) {
             if (taskList[i].taskId == findTaskId) {
                 taskList[taskList.indexOf(taskList[i])].taskState = 0;
                 taskContainer.dataset.state = 0;
                 doneBtn.innerHTML = `<i class="far fa-check-circle"></i>`
                 localStorage.setItem("taskList", JSON.stringify(taskList));
-                updateSummary();
-
-                doneBtn.addEventListener("click", markDone)
-                taskContainer = null;
             }
         }
     }
+    updateSummary();
 }
 
 function generateDate() {
@@ -342,7 +336,16 @@ function setDefualt() {
     taskPrioInput1.value = 0;
 }
 
+function taskView(e){
+    if(e.target.dataset.view == "all"){
+        let spn = e.target;
+        spn.classList.toggle("activeView")
+    }
+ 
+}
+
 getLocalStorage();
+allViewBtn.forEach(spn => spn.addEventListener("click", taskView))
 clearListButton.addEventListener("click", clearTasks)
 addTaskButton.addEventListener("click", createNewTask);
 taskNameInput1.addEventListener("keyup", function (e) {

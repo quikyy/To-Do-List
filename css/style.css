@@ -287,10 +287,11 @@ ul {
     opacity: 0.5;
     letter-spacing: 1px;
     font-size: 1.1em;
+    cursor: pointer;
 }
 
-.activeInSummary {
-    color: var(--color);
+.activeView {
+    color: var(--editRemoveColor);
     font-weight: bold;
 }
 
