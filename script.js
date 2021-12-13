@@ -156,7 +156,43 @@ function editTask(e) {
         confirmEditBtn.classList.add("confirm-edit-button")
 
         taskContainer.appendChild(confirmEditBtn)
-
+        userInput.addEventListener("keyup", function(e){
+            if(e.keyCode == 13){
+                for (let i = 0; i < taskList.length; i++) {
+                    if (taskList[i].taskId == findTaskId) {
+                        if (userInput.value != "") {
+                            if (userInput.value.charAt(0) == " ") {
+                                userInput.value = userInput.value.trimLeft();
+                            }
+                            editFlag = false;
+                            objectInList = taskList.indexOf(taskList[i])
+                            taskList[objectInList].taskName = userInput.value.charAt(0).toUpperCase() + userInput.value.slice(1);
+                            taskList[objectInList].taskEditDate = generateDate();
+                            localStorage.setItem("taskList", JSON.stringify(taskList));
+    
+                            userInput.value = userInput.value.charAt(0).toUpperCase() + userInput.value.slice(1);
+    
+                            removeBtn.classList.remove("hideElement")
+                            editBtn.classList.remove("hideElement")
+                            markBtns.forEach(btn => btn.style.pointerEvents = "")
+                            editBtns.forEach(btn => btn.style.pointerEvents = "")
+                            removeBtns.forEach(btn => btn.style.pointerEvents = "")
+                            userInput.setAttribute("readonly", "readonly");
+                            overlay.classList.remove("overlayOn")
+                            confirmEditBtn.remove();
+    
+                            date_edited.innerText = `Edited: ${taskList[objectInList].taskEditDate}`;
+                            clearListButton.style.pointerEvents = ""
+                            taskContainer.style.backgroundColor = ""
+                            overlay.removeEventListener("click", exitOverlay)
+                        }
+                    }
+                }
+            }
+            else if(e.keyCode == 27){
+                exitOverlay();
+            }
+        })
         confirmEditBtn.addEventListener("click", function () {
             for (let i = 0; i < taskList.length; i++) {
                 if (taskList[i].taskId == findTaskId) {
