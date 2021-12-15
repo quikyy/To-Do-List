@@ -3,8 +3,6 @@ const controler = document.querySelector(".controler")
 const addTaskButton = document.querySelector(".add-btn")
 // UserInput
 let taskNameInput1 = document.querySelector(".userInput")
-let taskPrioInput1 = document.querySelector(".prioInput")
-let taskEndInput1 = document.querySelector(".endInput")
 // Ul
 const ulList = document.querySelector("ul");
 // Summary
@@ -28,14 +26,13 @@ function getLocalStorage() {
     if (getLocalTaskList != null) {
         taskList = getLocalTaskList;
         for (let i = 0; i < taskList.length; i++) {
-            taskTemplate(taskList[i].taskState, taskList[i].taskName, taskList[i].taskPrio, taskList[i].taskStartDate, taskList[i].taskEditDate, taskList[i].taskId)
+            taskTemplate(taskList[i].taskState, taskList[i].taskName, taskList[i].taskStartDate, taskList[i].taskEditDate, taskList[i].taskId)
         }
     }
 }
 
 function createNewTask() {
     let taskNameInput = document.querySelector(".userInput").value;
-    let taskPrioInput = document.querySelector(".prioInput").value;
     if (taskNameInput == "") {
         return
     } else if (taskNameInput != "") {
@@ -45,25 +42,22 @@ function createNewTask() {
         let newTask = {
             taskState: 0,
             taskName: taskNameInput,
-            taskPrio: taskPrioInput,
             taskStartDate: generateDate(),
             taskEditDate: 0,
-            taskEndDate: generateEndDate(),
             taskId: new Date().getTime()
         }
 
         taskList.push(newTask);
         localStorage.setItem("taskList", JSON.stringify(taskList));
         let capitalizeChar = taskNameInput.charAt(0).toUpperCase() + taskNameInput.slice(1);
-        taskTemplate(newTask.taskState, capitalizeChar, taskPrioInput, newTask.taskStartDate, newTask.taskEditDate, newTask.taskId)
+        taskTemplate(newTask.taskState, capitalizeChar, newTask.taskStartDate, newTask.taskEditDate, newTask.taskId)
         setDefualt()
     }
 }
 
-function taskTemplate(taskState, taskName, taskPrio, taskStartDate, taskEditDate, taskId) {
+function taskTemplate(taskState, taskName,taskStartDate, taskEditDate, taskId) {
     // Create an task container
     const taskContainer = document.createElement("div");
-    taskContainer.dataset.prio = taskPrio;
 
     // Taskstate = 1 - DONE | 0 = UN-DONE
     if (taskState == 1) {
@@ -321,18 +315,6 @@ function generateDate() {
     return properDate;
 }
 
-function generateEndDate() {
-    let endInput = document.querySelector(".endInput").value
-    let dateVal = new Date(endInput)
-    let date = dateVal.getDate()
-    let month = (dateVal.getMonth() + 1)
-    let year = dateVal.getFullYear()
-    let hour = dateVal.getHours();
-    let minute = dateVal.getMinutes();
-    let properDate = `${date}.${month}.${year}, ${hour}:${minute}`
-    return properDate;
-}
-
 function clearTasks() {
     taskList = [];
     localStorage.removeItem("taskList")
@@ -369,7 +351,6 @@ function updateSummary() {
 
 function setDefualt() {
     taskNameInput1.value = ""
-    taskPrioInput1.value = 0;
 }
 
 function taskView(e){
@@ -387,25 +368,30 @@ addTaskButton.addEventListener("click", createNewTask);
 taskNameInput1.addEventListener("keyup", function (e) {
     if (e.keyCode == 13) {
         let taskNameInput = document.querySelector(".userInput").value;
-        let taskPrioInput = document.querySelector(".prioInput").value;
         if (taskNameInput == "" || taskNameInput.charAt(0) == " ") {
+
             return
         } else if (taskNameInput != "") {
+            
             let newTask = {
                 taskState: 0,
                 taskName: taskNameInput,
-                taskPrio: taskPrioInput,
                 taskStartDate: generateDate(),
                 taskEditDate: 0,
-                taskEndDate: generateEndDate(),
                 taskId: new Date().getTime()
             }
 
             taskList.push(newTask);
             localStorage.setItem("taskList", JSON.stringify(taskList));
             let capitalizeChar = taskNameInput.charAt(0).toUpperCase() + taskNameInput.slice(1);
-            taskTemplate(newTask.taskState, capitalizeChar, taskPrioInput, newTask.taskStartDate, newTask.taskEditDate, newTask.taskId)
+            taskTemplate(newTask.taskState, capitalizeChar, newTask.taskStartDate, newTask.taskEditDate, newTask.taskId)
             setDefualt()
+        
         }
     }
+})
+
+controler.addEventListener("input", function(){
+    taskNameInput1.value != "" ? controler.classList.add("controlerGrow") : controler.classList.remove("controlerGrow")
+    
 })

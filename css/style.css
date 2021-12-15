@@ -79,7 +79,7 @@ body {
 .controler {
     position: relative;
     display: flex;
-    height: 38px;
+    height: 40px;
     width: 100%;
     padding: 0 10px;
     flex-wrap: wrap;
@@ -96,7 +96,7 @@ body {
 }
 
 .controlerGrow {
-    height: 100px;
+    height: 80px;
 }
 
 .userInput {
@@ -104,7 +104,6 @@ body {
     width: 80%;
     border: transparent;
     font-size: 1.5em;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.096);
 }
 
 .userInput:focus,
@@ -112,40 +111,10 @@ input:focus {
     outline: none;
 }
 
-.prio-container {
-    display: flex;
-    width: 50%;
-    flex-direction: column;
-    align-items: center;
-    opacity: 0.5;
-}
-
-.prioInput {
-    border: transparent;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.096);
-    text-align: center;
-}
-
-.prioInput:focus {
-    outline: none;
-}
-
-.end-date-container {
-    display: flex;
-    width: 50%;
-    flex-direction: column;
-    align-items: center;
-    opacity: 0.5;
-}
-
-.endInput {
-    border: transparent;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.096);
-    text-align: center;
-}
 
 .add-btn {
     height: 40px;
+    width: 20%;
     background-color: white;
     border: transparent;
     border-top-right-radius: var(--border-radius);
@@ -168,7 +137,25 @@ input:focus {
     transform: translateY(3px);
 }
 
+.end_task{
+    display: flex;
+    height: 40px;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    border-top: #023d8a21 1px solid;
+    
+}
+.end_task span {
+    font-size: 1.2em;
+}
+.date_end {
+    cursor: pointer;
+    border: transparent;
+    border-bottom: #023d8a21 1px solid;
+}
 
+/*  */
 #lista {
     position: relative;
     margin: var(--margin);
