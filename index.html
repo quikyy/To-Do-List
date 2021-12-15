@@ -18,15 +18,10 @@
         <section class="controler">
             <input type="text" class="userInput" placeholder="Enter task here">
             <button class="add-btn" id="add">add task <i class="fas fa-chevron-down"></i></button>
-
-            <div class="prio-container">
-                <span>[WIP!!]TASK PRIORITY(0-3)[WIP!!]:</span>
-                <input value="0" class="prioInput" type="number" min="0" max="3">
-            </div>
-
-            <div class="end-date-container">
-                <span>[WIP!!]TASK END DATE:[WIP!!]</span>
-                <input class="endInput" type="datetime-local">
+            <div class="end_task">
+                <span>Would you like to select an deadline for your task?</span>
+                <input class="date_end" type= "datetime-local">
+                
             </div>
 
         </section>
@@ -37,7 +32,7 @@
             <div class="summary">
                 <span data-view="all" class="how-many-items activeView"></span>
                 <span data-view="done" class="how-many-done"></span>
-                <span data-view="pending"class="how-many-undone"></span>
+                <span data-view="pending" class="how-many-undone"></span>
                 <button class="clear-btn" id="clear">Clear tasks</button>
             </div>
         </section>
