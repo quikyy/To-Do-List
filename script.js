@@ -24,28 +24,11 @@ let editFlag = false;
 
 function getLocalStorage() {
     let getLocalTaskList = JSON.parse(localStorage.getItem("taskList"))
-    
+
     if (getLocalTaskList != null) {
         taskList = getLocalTaskList;
         for (let i = 0; i < taskList.length; i++) {
-            function xyz(){
-                let today_date = new Date()
-                let end_date = new Date(taskList[i].taskEndDate)
-                today_date = today_date.getTime();
-
-                let time_to_end = end_date - today_date
-                const oneDay = 24 * 60 * 60 * 1000
-                const oneHour = 60 * 60 * 1000
-                const oneMin = 60 * 1000
-
-                let days = Math.floor(time_to_end / oneDay)
-                let hours = Math.floor((time_to_end % oneDay) / oneHour);
-                let mins = Math.floor((time_to_end % oneHour) / oneMin);
-                let sec = Math.floor((time_to_end % oneMin) / 1000)
-                let text = `Time left: ${days} days ${hours} hours ${mins} mins and ${sec} seconds`
-                return text;
-            }
-            taskTemplate(taskList[i].taskState, taskList[i].taskName, taskList[i].taskStartDate, taskList[i].taskEndDate, taskList[i].taskEditDate, taskList[i].taskId, xyz())
+            taskTemplate(taskList[i].taskState, taskList[i].taskName, taskList[i].taskStartDate, taskList[i].taskEndDate, taskList[i].taskEditDate, taskList[i].taskId, compareDates(taskList[i]))
         }
     }
 }
@@ -69,28 +52,11 @@ function createNewTask() {
             taskEndDate: taskEndInput,
             taskEditDate: 0,
             taskId: new Date().getTime(),
-            compareDates: function () {
-                let today_date = new Date()
-                let end_date = new Date(newTask.taskEndDate)
-                today_date = today_date.getTime();
-
-                let time_to_end = end_date - today_date
-                const oneDay = 24 * 60 * 60 * 1000
-                const oneHour = 60 * 60 * 1000
-                const oneMin = 60 * 1000
-
-                let days = Math.floor(time_to_end / oneDay)
-                let hours = Math.floor((time_to_end % oneDay) / oneHour);
-                let mins = Math.floor((time_to_end % oneHour) / oneMin);
-                let sec = Math.floor((time_to_end % oneMin) / 1000)
-                let text = `Time left: ${days} days ${hours} hours ${mins} mins and ${sec} seconds`
-                return text;
-            }
         }
         taskList.push(newTask)
         localStorage.setItem("taskList", JSON.stringify(taskList));
         let capitalizeChar = taskNameInput.charAt(0).toUpperCase() + taskNameInput.slice(1);
-        taskTemplate(newTask.taskState, capitalizeChar, newTask.taskStartDate.toISOString(), newTask.taskEndDate, newTask.taskEditDate, newTask.taskId, newTask.compareDates())
+        taskTemplate(newTask.taskState, capitalizeChar, newTask.taskStartDate.toISOString(), newTask.taskEndDate, newTask.taskEditDate, newTask.taskId, compareDates(newTask))
         setDefualt()
     }
 }
@@ -161,7 +127,7 @@ function taskTemplate(taskState, taskName, taskStartDate, taskEndDate, taskEditD
         secs = "00"
         endDate.innerText = `Deadline: ${day}.${month}.${year}, ${hour}:${minutes}:${secs}`
     } else {
-        endDate.innerText = "Deadline: none"
+        endDate.innerText = ""
     }
     taskContainer.appendChild(endDate)
     const timeToEnd = document.createElement("span")
@@ -192,7 +158,7 @@ function editTask(e) {
         userInput.removeAttribute("readonly");
         userInput.focus();
 
-        taskContainer.style.backgroundColor = "white"
+        taskContainer.style.background = "linear-gradient(to right, #373b44, #4286f4)"
         clearListButton.style.pointerEvents = "none"
 
         removeBtn.classList.add("hideElement")
@@ -232,7 +198,7 @@ function editTask(e) {
 
                             date_edited.innerText = `Edited: ${taskList[objectInList].taskEditDate}`;
                             clearListButton.style.pointerEvents = ""
-                            taskContainer.style.backgroundColor = ""
+                            taskContainer.style.background = "transparent"
                             overlay.removeEventListener("click", exitOverlay)
                         }
                     }
@@ -268,7 +234,7 @@ function editTask(e) {
 
                         date_edited.innerText = `Edited: ${taskList[objectInList].taskEditDate}`;
                         clearListButton.style.pointerEvents = ""
-                        taskContainer.style.backgroundColor = ""
+                        taskContainer.style.background = "transparent"
                         overlay.removeEventListener("click", exitOverlay)
                     }
                 }
@@ -291,7 +257,7 @@ function editTask(e) {
             markBtns.forEach(btn => btn.style.pointerEvents = "")
             editBtns.forEach(btn => btn.style.pointerEvents = "")
             removeBtns.forEach(btn => btn.style.pointerEvents = "")
-            taskContainer.style.backgroundColor = ""
+            taskContainer.style.background = "transparent"
         }
     }
 }
@@ -407,28 +373,28 @@ function setDefualt() {
     taskNameInput1.value = ""
 }
 
+function compareDates(x) {
+    const task = x
+    let infoText = ""
+    if (task.taskEndDate == 0) {
+        return infoText;
 
+    }
+    const today_date = new Date().getTime();
+    const end_date = new Date(task.taskEndDate)
+    const time_to_end = end_date - today_date
+    const oneDay = 24 * 60 * 60 * 1000
+    const oneHour = 60 * 60 * 1000
+    const oneMin = 60 * 1000
+
+    let days = Math.floor(time_to_end / oneDay)
+    let hours = Math.floor((time_to_end % oneDay) / oneHour);
+    let mins = Math.floor((time_to_end % oneHour) / oneMin);
+    let sec = Math.floor((time_to_end % oneMin) / 1000)
+    return infoText = (`Time left: ${days} days ${hours} hours ${mins} mins and ${sec} seconds`)
+}
 
 getLocalStorage();
-
-// function compareDates(x) {
-//     let task1 = taskList[x];
-//     let today_date = new Date()
-//     let end_date = new Date(task1.taskEndDate)
-//     today_date = today_date.getTime();
-
-//     let time_to_end = end_date - today_date
-//     const oneDay = 24 * 60 * 60 * 1000
-//     const oneHour = 60 * 60 * 1000
-//     const oneMin = 60 * 1000
-
-//     let days = Math.floor(time_to_end / oneDay)
-//     let hours = Math.floor((time_to_end % oneDay) / oneHour);
-//     let mins = Math.floor((time_to_end % oneHour) / oneMin);
-//     let sec = Math.floor((time_to_end % oneMin) / 1000)
-//     let text = (`Time left: ${days} days ${hours} hours ${mins} mins and ${sec} seconds`)
-//     return text;
-// }
 clearListButton.addEventListener("click", clearTasks)
 addTaskButton.addEventListener("click", createNewTask);
 // taskNameInput1.addEventListener("keyup", function (e) {

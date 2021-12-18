@@ -15,8 +15,7 @@
     --transition: 0.2s ease-in-out;
 
     /* overlay */
-    --overlayColor: #03071e56;
-
+    --overlayColor:  #00111c9e;
     /* add / clear */
     --addClearSize: 1.4em;
     --addColor: #023e8a;
@@ -32,6 +31,7 @@
 
 body {
     font-size: var(--fontSizeDefualt);
+    background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
 }
 
 .wrapper {
@@ -70,9 +70,8 @@ body {
     background: linear-gradient(to right, #e8cbc09c, #636fa42c), url(background2.jpg);
     background-size: cover;
     background-position: center;
-    box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+    box-shadow: rgba(255, 255, 255, 0.15) 0px 3px 12px;
     border-radius: 5px;
-
 }
 
 
@@ -89,7 +88,7 @@ body {
     border-bottom-left-radius: var(--border-radius);
     border-top-right-radius: var(--border-radius);
     border-bottom-right-radius: var(--border-radius);
-    box-shadow: rgba(0, 0, 0, 0.09) 0px 3px 12px;
+    box-shadow: rgba(255, 255, 255, 0.15) 0px 3px 12px;
     transition: 0.2s ease-in-out;
     overflow: hidden;
     background-color: transparent;
@@ -104,6 +103,8 @@ body {
     width: 80%;
     border: transparent;
     font-size: 1.5em;
+    background-color: transparent;
+    color: white;
 }
 
 .userInput:focus,
@@ -125,6 +126,8 @@ input:focus {
     font-size: var(--addClearSize);
     transition: var(--transition);
     color: var(--addColor);
+    background-color: transparent;
+    color: white;
 }
 
 .add-btn i {
@@ -142,17 +145,21 @@ input:focus {
     height: 40px;
     width: 100%;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     border-top: #023d8a21 1px solid;
     
 }
 .end_task span {
     font-size: 1.2em;
+    color: wheat;
 }
 .date_end {
     cursor: pointer;
     border: transparent;
-    border-bottom: #023d8a21 1px solid;
+    width: 60%;
+    text-align: center;
+    color: white;
+    background-color: transparent;
 }
 
 /*  */
@@ -177,13 +184,14 @@ ul {
     /* margin-top: 15px; */
     margin: 10px auto;
     overflow: hidden;
-    box-shadow: rgba(0, 0, 0, 0.09) 0px 3px 12px;
+    box-shadow: rgba(255, 255, 255, 0.15) 0px 3px 12px;
     border-radius: var(--border-radius);
     background-color: transparent;
+    color: white;
 }
 
 .newDivContainer .active {
-    background-color: white;
+    background-color: -webkit-linear-gradient(to top, #8e9eab, #eef2f3);
     z-index: 101;
 }
 
@@ -199,6 +207,7 @@ ul {
     letter-spacing: 1px;
     border: transparent;
     background-color: transparent;
+    color: white;
 }
 
 .newDivContainer button {
@@ -214,19 +223,19 @@ ul {
 }
 
 .newDivContainer .remove-button {
-    color: var(--editRemoveColor);
+    color: white;
 }
 
 .newDivContainer .edit-button {
     margin-right: 10px;
     margin-left: 15px;
-    color: var(--editRemoveColor);
+    color: white;
     transform: rotate(0deg);
 }
 
 .newDivContainer .confirm-edit-button {
     margin-right: 10px;
-    color: var(--editRemoveColor);
+    color: white;
 }
 
 
@@ -279,9 +288,10 @@ ul {
     align-items: center;
     margin-top: 25px;
     justify-content: space-between;
-    box-shadow: rgba(0, 0, 0, 0.09) 0px 3px 12px;
+    box-shadow: rgba(255, 255, 255, 0.15) 0px 3px 12px;
     border-radius: var(--border-radius);
     background-color: transparent;
+    color: white;
 }
 
 .summaryOn {
@@ -295,11 +305,11 @@ ul {
     letter-spacing: 1px;
     font-size: 1.1em;
     cursor: pointer;
+    color: white;
 }
 
 .activeView {
-    color: var(--editRemoveColor);
-    font-weight: bold;
+    
 }
 
 .clear-btn {
@@ -311,7 +321,8 @@ ul {
     text-transform: uppercase;
     border: transparent;
     cursor: pointer;
-    transition: var(--transition)
+    transition: var(--transition);
+    color: white;
 }
 
 .clear-btn:hover {
