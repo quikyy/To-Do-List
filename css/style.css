@@ -172,8 +172,10 @@ ul {
     position: relative;
     display: flex;
     align-items: center;
-    height: 50px;
-    margin-top: 15px;
+    height: 70px;
+    width: 95%;
+    /* margin-top: 15px; */
+    margin: 10px auto;
     overflow: hidden;
     box-shadow: rgba(0, 0, 0, 0.09) 0px 3px 12px;
     border-radius: var(--border-radius);
@@ -192,6 +194,7 @@ ul {
     flex-direction: row-reverse;
     justify-content: flex-end;
     width: 90%;
+    height: 50%;
     font-size: 1.6em;
     letter-spacing: 1px;
     border: transparent;
@@ -199,6 +202,7 @@ ul {
 }
 
 .newDivContainer button {
+    height: 50%;
     background-color: transparent;
     border: transparent;
 }
@@ -239,8 +243,24 @@ ul {
 
 .date-of-creation {
     position: absolute;
-    bottom: 0;
+    bottom: 2px;
+    left: 10px;
+    letter-spacing: 1px;
+    opacity: 0.4;
+}
+
+.end-of-creation {
+    position: absolute;
+    bottom: 2px;
     right: 10px;
+    letter-spacing: 1px;
+    opacity: 0.4;
+}
+
+.time-to-end{
+    position: absolute;
+    top: 2px;
+    left: 10px;
     letter-spacing: 1px;
     opacity: 0.4;
 }

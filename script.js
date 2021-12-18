@@ -3,6 +3,7 @@ const controler = document.querySelector(".controler")
 const addTaskButton = document.querySelector(".add-btn")
 // UserInput
 let taskNameInput1 = document.querySelector(".userInput")
+let endinput = document.querySelector(".date-end");
 // Ul
 const ulList = document.querySelector("ul");
 // Summary
@@ -26,45 +27,47 @@ function getLocalStorage() {
     if (getLocalTaskList != null) {
         taskList = getLocalTaskList;
         for (let i = 0; i < taskList.length; i++) {
-            taskTemplate(taskList[i].taskState, taskList[i].taskName, taskList[i].taskStartDate, taskList[i].taskEditDate, taskList[i].taskId)
+            taskTemplate(taskList[i].taskState, taskList[i].taskName, taskList[i].taskStartDate, taskList[i].taskEndDate, taskList[i].taskEditDate, taskList[i].taskId)
         }
     }
 }
 
 function createNewTask() {
     let taskNameInput = document.querySelector(".userInput").value;
+    let taskEndInput = document.querySelector(".date_end").value
     if (taskNameInput == "") {
         return
     } else if (taskNameInput != "") {
         if (taskNameInput.charAt(0) == " ") {
             taskNameInput = taskNameInput.trimLeft();
         }
+        let year = taskEndInput.slice(0, 4)
+        if (parseInt(year) < 2021) {
+            taskEndInput = "0"
+        }
         let newTask = {
             taskState: 0,
             taskName: taskNameInput,
-            taskStartDate: generateDate(),
+            taskStartDate: new Date(),
+            taskEndDate: taskEndInput,
             taskEditDate: 0,
             taskId: new Date().getTime()
         }
-
-        taskList.push(newTask);
+        taskList.push(newTask)
+        compareDates(taskList.length - 1)
         localStorage.setItem("taskList", JSON.stringify(taskList));
         let capitalizeChar = taskNameInput.charAt(0).toUpperCase() + taskNameInput.slice(1);
-        taskTemplate(newTask.taskState, capitalizeChar, newTask.taskStartDate, newTask.taskEditDate, newTask.taskId)
+        taskTemplate(newTask.taskState, capitalizeChar, newTask.taskStartDate.toISOString(), newTask.taskEndDate, newTask.taskEditDate, newTask.taskId)
         setDefualt()
     }
 }
 
-function taskTemplate(taskState, taskName,taskStartDate, taskEditDate, taskId) {
+function taskTemplate(taskState, taskName, taskStartDate, taskEndDate, taskEditDate, taskId) {
     // Create an task container
     const taskContainer = document.createElement("div");
 
     // Taskstate = 1 - DONE | 0 = UN-DONE
-    if (taskState == 1) {
-        taskContainer.dataset.state = 1;
-    } else {
-        taskContainer.dataset.state = 0
-    }
+    // taskState == 0 ? taskContainer.dataset.state = 1 : taskContainer.dataset.state = 0;
     taskContainer.dataset.id = taskId;
     taskContainer.classList.add("newDivContainer");
     ulList.appendChild(taskContainer);
@@ -72,11 +75,7 @@ function taskTemplate(taskState, taskName,taskStartDate, taskEditDate, taskId) {
     // Done/UnDone
     const mark = document.createElement("button")
     mark.classList.add("mark-button");
-    if (taskState == 1) {
-        mark.innerHTML = `<i class="fas fa-check-circle"></i>`
-    } else {
-        mark.innerHTML = `<i class="far fa-check-circle"></i>`
-    }
+    taskState == 1 ? mark.innerHTML = `<i class="fas fa-check-circle"></i>` : mark.innerHTML = `<i class="far fa-check-circle"></i>`
     taskContainer.appendChild(mark);
     const allMarkBtn = [...document.querySelectorAll(".newDivContainer .mark-button")]
     allMarkBtn.forEach(btn => btn.addEventListener("click", markDone))
@@ -106,16 +105,42 @@ function taskTemplate(taskState, taskName,taskStartDate, taskEditDate, taskId) {
 
     // Date of creation
     const startDate = document.createElement("span");
-    startDate.classList.add("date-of-creation")
-    if (taskEditDate != 0) {
-        startDate.innerText = `Edited: ${taskEditDate}`;
-    } else if (taskEditDate == 0) {
-        startDate.innerText = `Created: ${taskStartDate}`;
-    }
+    taskStartDate = taskStartDate.toString();
+    let year = taskStartDate.slice(0, 4)
+    let month = taskStartDate.slice(5, 7)
+    let day = taskStartDate.slice(8, 10)
+    let hour = taskStartDate.slice(11, 13)
+    let minutes = taskStartDate.slice(14, 16)
+    let secs = taskStartDate.slice(17, 19)
+    startDate.classList.add("date-of-creation");
+    taskEditDate == 0 ? startDate.innerText = `Created: ${day}.${month}.${year}, ${hour}:${minutes}:${secs}` : startDate.innerText = `Edited: ${taskEditDate}`;
     taskContainer.appendChild(startDate);
+
+    const endDate = document.createElement("span");
+    endDate.classList.add("end-of-creation")
+    if (taskEndDate != 0) {
+        taskEndDate = taskEndDate.toString();
+        year = taskEndDate.slice(0, 4)
+        month = taskEndDate.slice(5, 7)
+        day = taskEndDate.slice(8, 10)
+        hour = taskEndDate.slice(11, 13)
+        minutes = taskEndDate.slice(14, 16)
+        secs = "00"
+        endDate.innerText = `Deadline: ${day}.${month}.${year}, ${hour}:${minutes}:${secs}`
+    } else {
+        endDate.innerText = "Deadline: none"
+    }
+    taskContainer.appendChild(endDate)
+
+    const timeToEnd = document.createElement("span")
+    timeToEnd.classList.add("time-to-end");
+    timeToEnd.innerText = compareDates(taskList.length - 1)
+    taskContainer.appendChild(timeToEnd)
+
 
     updateSummary();
 }
+
 
 function editTask(e) {
     editFlag = true;
@@ -150,8 +175,8 @@ function editTask(e) {
         confirmEditBtn.classList.add("confirm-edit-button")
 
         taskContainer.appendChild(confirmEditBtn)
-        userInput.addEventListener("keyup", function(e){
-            if(e.keyCode == 13){
+        userInput.addEventListener("keyup", function (e) {
+            if (e.keyCode == 13) {
                 for (let i = 0; i < taskList.length; i++) {
                     if (taskList[i].taskId == findTaskId) {
                         if (userInput.value != "") {
@@ -163,9 +188,9 @@ function editTask(e) {
                             taskList[objectInList].taskName = userInput.value.charAt(0).toUpperCase() + userInput.value.slice(1);
                             taskList[objectInList].taskEditDate = generateDate();
                             localStorage.setItem("taskList", JSON.stringify(taskList));
-    
+
                             userInput.value = userInput.value.charAt(0).toUpperCase() + userInput.value.slice(1);
-    
+
                             removeBtn.classList.remove("hideElement")
                             editBtn.classList.remove("hideElement")
                             markBtns.forEach(btn => btn.style.pointerEvents = "")
@@ -174,7 +199,7 @@ function editTask(e) {
                             userInput.setAttribute("readonly", "readonly");
                             overlay.classList.remove("overlayOn")
                             confirmEditBtn.remove();
-    
+
                             date_edited.innerText = `Edited: ${taskList[objectInList].taskEditDate}`;
                             clearListButton.style.pointerEvents = ""
                             taskContainer.style.backgroundColor = ""
@@ -182,12 +207,12 @@ function editTask(e) {
                         }
                     }
                 }
-            }
-            else if(e.keyCode == 27){
+            } else if (e.keyCode == 27) {
                 exitOverlay();
             }
         })
         confirmEditBtn.addEventListener("click", function () {
+
             for (let i = 0; i < taskList.length; i++) {
                 if (taskList[i].taskId == findTaskId) {
                     if (userInput.value != "") {
@@ -240,6 +265,34 @@ function editTask(e) {
         }
     }
 }
+function generateDate() {
+    let currentTime = new Date();
+    let getHour = currentTime.getHours()
+    if (getHour < 10) {
+        getHour = `0${getHour}`
+    }
+    let getMin = currentTime.getMinutes();
+    if (getMin < 10) {
+        getMin = `0${getMin}`
+    }
+    let getSec = currentTime.getSeconds();
+    if (getSec < 10) {
+        getSec = `0${getSec}`
+    }
+
+    let getMonth = currentTime.getMonth();
+    if (getMonth < 10) {
+        getMonth = `0${getMonth}`
+    }
+
+    let getDate = currentTime.getDate();
+    if (getDate < 10) {
+        getDate = `0${getDate}`
+    }
+    let getYear = currentTime.getFullYear()
+    let properDate = `${getDate}.${getMonth+1}.${getYear}, ${getHour}:${getMin}:${getSec}`
+    return properDate;
+}
 
 function removeTask(e) {
     let taskContainer = e.target.parentNode.parentNode;
@@ -285,36 +338,6 @@ function markDone(e) {
     updateSummary();
 }
 
-function generateDate() {
-    let currentTime = new Date();
-
-    let getHour = currentTime.getHours()
-    if (getHour < 10) {
-        getHour = `0${getHour}`
-    }
-    let getMin = currentTime.getMinutes();
-    if (getMin < 10) {
-        getMin = `0${getMin}`
-    }
-    let getSec = currentTime.getSeconds();
-    if (getSec < 10) {
-        getSec = `0${getSec}`
-    }
-
-    let getMonth = currentTime.getMonth();
-    if (getMonth < 10) {
-        getMonth = `0${getMonth}`
-    }
-
-    let getDate = currentTime.getDate();
-    if (getDate < 10) {
-        getDate = `0${getDate}`
-    }
-    let getYear = currentTime.getFullYear()
-    let properDate = `${getDate}.${getMonth+1}.${getYear}, ${getHour}:${getMin}:${getSec}`
-    return properDate;
-}
-
 function clearTasks() {
     taskList = [];
     localStorage.removeItem("taskList")
@@ -353,45 +376,57 @@ function setDefualt() {
     taskNameInput1.value = ""
 }
 
-function taskView(e){
-    if(e.target.dataset.view == "all"){
-        let spn = e.target;
-        spn.classList.toggle("activeView")
-    }
- 
-}
+
 
 getLocalStorage();
-allViewBtn.forEach(spn => spn.addEventListener("click", taskView))
+
+function compareDates(x) {
+    let task1 = taskList[x];
+    let today_date = new Date()
+    let end_date = new Date(task1.taskEndDate)
+    today_date = today_date.getTime();
+
+    let time_to_end = end_date - today_date
+    const oneDay = 24 * 60 * 60 * 1000
+    const oneHour = 60 * 60 * 1000
+    const oneMin = 60 * 1000
+
+    let days = Math.floor(time_to_end / oneDay)
+    let hours = Math.floor((time_to_end % oneDay) / oneHour);
+    let mins = Math.floor((time_to_end % oneHour) / oneMin);
+    let sec = Math.floor((time_to_end % oneMin) / 1000)
+    let text = (`Time left: ${days} days ${hours} hours ${mins} mins and ${sec} seconds`)
+    return text;
+}
 clearListButton.addEventListener("click", clearTasks)
 addTaskButton.addEventListener("click", createNewTask);
-taskNameInput1.addEventListener("keyup", function (e) {
-    if (e.keyCode == 13) {
-        let taskNameInput = document.querySelector(".userInput").value;
-        if (taskNameInput == "" || taskNameInput.charAt(0) == " ") {
+// taskNameInput1.addEventListener("keyup", function (e) {
+//     if (e.keyCode == 13) {
+//         let taskNameInput = document.querySelector(".userInput").value;
+//         if (taskNameInput == "" || taskNameInput.charAt(0) == " ") {
 
-            return
-        } else if (taskNameInput != "") {
-            
-            let newTask = {
-                taskState: 0,
-                taskName: taskNameInput,
-                taskStartDate: generateDate(),
-                taskEditDate: 0,
-                taskId: new Date().getTime()
-            }
+//             return
+//         } else if (taskNameInput != "") {
 
-            taskList.push(newTask);
-            localStorage.setItem("taskList", JSON.stringify(taskList));
-            let capitalizeChar = taskNameInput.charAt(0).toUpperCase() + taskNameInput.slice(1);
-            taskTemplate(newTask.taskState, capitalizeChar, newTask.taskStartDate, newTask.taskEditDate, newTask.taskId)
-            setDefualt()
-        
-        }
-    }
-})
+//             let newTask = {
+//                 taskState: 0,
+//                 taskName: taskNameInput,
+//                 taskStartDate: generateDate(),
+//                 taskEditDate: 0,
+//                 taskId: new Date().getTime()
+//             }
 
-controler.addEventListener("input", function(){
+//             taskList.push(newTask);
+//             localStorage.setItem("taskList", JSON.stringify(taskList));
+//             let capitalizeChar = taskNameInput.charAt(0).toUpperCase() + taskNameInput.slice(1);
+//             taskTemplate(newTask.taskState, capitalizeChar, newTask.taskStartDate, newTask.taskEditDate, newTask.taskId)
+//             setDefualt()
+
+//         }
+// //     }
+// })
+
+controler.addEventListener("input", function () {
     taskNameInput1.value != "" ? controler.classList.add("controlerGrow") : controler.classList.remove("controlerGrow")
-    
+
 })
