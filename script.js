@@ -24,7 +24,6 @@ let editFlag = false;
 
 function getLocalStorage() {
     let getLocalTaskList = JSON.parse(localStorage.getItem("taskList"))
-
     if (getLocalTaskList != null) {
         taskList = getLocalTaskList;
         for (let i = 0; i < taskList.length; i++) {
@@ -391,7 +390,13 @@ function compareDates(x) {
     let hours = Math.floor((time_to_end % oneDay) / oneHour);
     let mins = Math.floor((time_to_end % oneHour) / oneMin);
     let sec = Math.floor((time_to_end % oneMin) / 1000)
+
+    if(sec <= 0){
+        return infoText = `Time over!`
+    }
+
     return infoText = (`Time left: ${days} days ${hours} hours ${mins} mins and ${sec} seconds`)
+
 }
 
 getLocalStorage();
