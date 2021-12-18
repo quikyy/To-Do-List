@@ -24,10 +24,28 @@ let editFlag = false;
 
 function getLocalStorage() {
     let getLocalTaskList = JSON.parse(localStorage.getItem("taskList"))
+    
     if (getLocalTaskList != null) {
         taskList = getLocalTaskList;
         for (let i = 0; i < taskList.length; i++) {
-            taskTemplate(taskList[i].taskState, taskList[i].taskName, taskList[i].taskStartDate, taskList[i].taskEndDate, taskList[i].taskEditDate, taskList[i].taskId)
+            function xyz(){
+                let today_date = new Date()
+                let end_date = new Date(taskList[i].taskEndDate)
+                today_date = today_date.getTime();
+
+                let time_to_end = end_date - today_date
+                const oneDay = 24 * 60 * 60 * 1000
+                const oneHour = 60 * 60 * 1000
+                const oneMin = 60 * 1000
+
+                let days = Math.floor(time_to_end / oneDay)
+                let hours = Math.floor((time_to_end % oneDay) / oneHour);
+                let mins = Math.floor((time_to_end % oneHour) / oneMin);
+                let sec = Math.floor((time_to_end % oneMin) / 1000)
+                let text = `Time left: ${days} days ${hours} hours ${mins} mins and ${sec} seconds`
+                return text;
+            }
+            taskTemplate(taskList[i].taskState, taskList[i].taskName, taskList[i].taskStartDate, taskList[i].taskEndDate, taskList[i].taskEditDate, taskList[i].taskId, xyz())
         }
     }
 }
@@ -41,9 +59,8 @@ function createNewTask() {
         if (taskNameInput.charAt(0) == " ") {
             taskNameInput = taskNameInput.trimLeft();
         }
-        let year = taskEndInput.slice(0, 4)
-        if (parseInt(year) < 2021) {
-            taskEndInput = "0"
+        if (taskEndInput == "") {
+            taskEndInput = 0;
         }
         let newTask = {
             taskState: 0,
@@ -51,18 +68,34 @@ function createNewTask() {
             taskStartDate: new Date(),
             taskEndDate: taskEndInput,
             taskEditDate: 0,
-            taskId: new Date().getTime()
+            taskId: new Date().getTime(),
+            compareDates: function () {
+                let today_date = new Date()
+                let end_date = new Date(newTask.taskEndDate)
+                today_date = today_date.getTime();
+
+                let time_to_end = end_date - today_date
+                const oneDay = 24 * 60 * 60 * 1000
+                const oneHour = 60 * 60 * 1000
+                const oneMin = 60 * 1000
+
+                let days = Math.floor(time_to_end / oneDay)
+                let hours = Math.floor((time_to_end % oneDay) / oneHour);
+                let mins = Math.floor((time_to_end % oneHour) / oneMin);
+                let sec = Math.floor((time_to_end % oneMin) / 1000)
+                let text = `Time left: ${days} days ${hours} hours ${mins} mins and ${sec} seconds`
+                return text;
+            }
         }
         taskList.push(newTask)
-        compareDates(taskList.length - 1)
         localStorage.setItem("taskList", JSON.stringify(taskList));
         let capitalizeChar = taskNameInput.charAt(0).toUpperCase() + taskNameInput.slice(1);
-        taskTemplate(newTask.taskState, capitalizeChar, newTask.taskStartDate.toISOString(), newTask.taskEndDate, newTask.taskEditDate, newTask.taskId)
+        taskTemplate(newTask.taskState, capitalizeChar, newTask.taskStartDate.toISOString(), newTask.taskEndDate, newTask.taskEditDate, newTask.taskId, newTask.compareDates())
         setDefualt()
     }
 }
 
-function taskTemplate(taskState, taskName, taskStartDate, taskEndDate, taskEditDate, taskId) {
+function taskTemplate(taskState, taskName, taskStartDate, taskEndDate, taskEditDate, taskId, taskCompare) {
     // Create an task container
     const taskContainer = document.createElement("div");
 
@@ -131,13 +164,10 @@ function taskTemplate(taskState, taskName, taskStartDate, taskEndDate, taskEditD
         endDate.innerText = "Deadline: none"
     }
     taskContainer.appendChild(endDate)
-
     const timeToEnd = document.createElement("span")
     timeToEnd.classList.add("time-to-end");
-    timeToEnd.innerText = compareDates(taskList.length - 1)
+    timeToEnd.innerText = taskCompare;
     taskContainer.appendChild(timeToEnd)
-
-
     updateSummary();
 }
 
@@ -265,6 +295,7 @@ function editTask(e) {
         }
     }
 }
+
 function generateDate() {
     let currentTime = new Date();
     let getHour = currentTime.getHours()
@@ -380,24 +411,24 @@ function setDefualt() {
 
 getLocalStorage();
 
-function compareDates(x) {
-    let task1 = taskList[x];
-    let today_date = new Date()
-    let end_date = new Date(task1.taskEndDate)
-    today_date = today_date.getTime();
+// function compareDates(x) {
+//     let task1 = taskList[x];
+//     let today_date = new Date()
+//     let end_date = new Date(task1.taskEndDate)
+//     today_date = today_date.getTime();
 
-    let time_to_end = end_date - today_date
-    const oneDay = 24 * 60 * 60 * 1000
-    const oneHour = 60 * 60 * 1000
-    const oneMin = 60 * 1000
+//     let time_to_end = end_date - today_date
+//     const oneDay = 24 * 60 * 60 * 1000
+//     const oneHour = 60 * 60 * 1000
+//     const oneMin = 60 * 1000
 
-    let days = Math.floor(time_to_end / oneDay)
-    let hours = Math.floor((time_to_end % oneDay) / oneHour);
-    let mins = Math.floor((time_to_end % oneHour) / oneMin);
-    let sec = Math.floor((time_to_end % oneMin) / 1000)
-    let text = (`Time left: ${days} days ${hours} hours ${mins} mins and ${sec} seconds`)
-    return text;
-}
+//     let days = Math.floor(time_to_end / oneDay)
+//     let hours = Math.floor((time_to_end % oneDay) / oneHour);
+//     let mins = Math.floor((time_to_end % oneHour) / oneMin);
+//     let sec = Math.floor((time_to_end % oneMin) / 1000)
+//     let text = (`Time left: ${days} days ${hours} hours ${mins} mins and ${sec} seconds`)
+//     return text;
+// }
 clearListButton.addEventListener("click", clearTasks)
 addTaskButton.addEventListener("click", createNewTask);
 // taskNameInput1.addEventListener("keyup", function (e) {
