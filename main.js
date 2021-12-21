@@ -95,7 +95,12 @@ function taskTemplate(taskStatus, taskName, taskStartDate, taskEndDate, taskEdit
     }
     // Dates
     const startDate = document.createElement("span");
+    if(taskEditDate != 0){
+        startDate.innerText = generateDate();
+    }
+    else {
     startDate.innerText = tasksDate(taskStartDate)
+    }
     startDate.classList.add("date-of-creation");
     taskContainer.appendChild(startDate);
 
@@ -103,6 +108,8 @@ function taskTemplate(taskStatus, taskName, taskStartDate, taskEndDate, taskEdit
     endDate.classList.add("end-of-creation")
     endDate.innerText = tasksDate(taskEndDate)
     taskContainer.appendChild(endDate)
+
+    
 
     const timeToEnd = document.createElement("span")
     timeToEnd.classList.add("time-to-end");

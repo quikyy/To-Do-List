@@ -23,7 +23,7 @@ function generateDate() {
         getDate = `0${getDate}`
     }
     let getYear = currentTime.getFullYear()
-    let properDate = `${getDate}.${getMonth+1}.${getYear}, ${getHour}:${getMin}:${getSec}`
+    let properDate = `Edited: ${getDate} ${monthsList[getMonth + 1]} ${getYear}, ${getHour}:${getMin}`
     return properDate;
 }
 function compareDates(x) {

@@ -120,14 +120,11 @@ function editTask(e) {
         function exitOverlay() {
             editFlag = false;
             overlay.classList.remove("overlayOn")
-
             userInput.setAttribute("readonly", "readonly");
             userInput.value = previousInput;
-
             removeBtn.classList.remove("hideElement")
             editBtn.classList.remove("hideElement")
             confirmEditBtn.remove();
-
             clearListButton.style.pointerEvents = ""
             markBtns.forEach(btn => btn.style.pointerEvents = "")
             editBtns.forEach(btn => btn.style.pointerEvents = "")
@@ -143,7 +140,6 @@ function markDone(e) {
     let findStatus = taskContainer.dataset.status;
     let doneBtn = taskContainer.querySelector(".mark-button")
     let input = taskContainer.querySelector("input")
-    console.log(taskContainer.pageYoffset)
     if (findStatus == 0) {
         for (let i = 0; i < taskList.length; i++) {
             if (taskList[i].taskId == findTaskId) {
