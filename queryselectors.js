@@ -21,4 +21,5 @@ const overlay = document.querySelector(".overlay")
 // Variables
 let taskList = []
 let editFlag = false;
+let task_input_placeholders = ["Enter your daily task, for example: Go to the gym.", "Enter your daily task, for example: Go for a walk.", "Enter your daily task, for example: Schedule a work meeting.", "Enter your daily task, for example: Clean whole house."]
 const monthsList = ["", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]

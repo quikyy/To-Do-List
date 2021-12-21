@@ -43,7 +43,7 @@ function compareDates(x) {
     let hours = Math.floor((time_to_end % oneDay) / oneHour);
     let mins = Math.floor((time_to_end % oneHour) / oneMin);
     let sec = Math.floor((time_to_end % oneMin) / 1000)
-    return infoText = (`Time left: ${days} days ${hours} hours ${mins} minutes ${sec} secs`)
+    return infoText = `Time left: ${days} days ${hours} hours ${mins} minutes ${sec} secs`
 }
 
 function tasksDate(type) {
@@ -56,7 +56,7 @@ function tasksDate(type) {
     let day = type.slice(8, 10)
     let hour = parseInt(type.slice(11, 13))
     let minutes = type.slice(14, 16)
-    return text = `Created: ${day} ${month} ${year}, ${hour + 1}:${minutes}`
+    return text = `${day} ${month} ${year}, ${hour + 1}:${minutes}`
     }
     else {
         return text = ""

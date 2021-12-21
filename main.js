@@ -1,4 +1,5 @@
 function getLocalStorage() {
+    setDefualt();
     let getLocalTaskList = JSON.parse(localStorage.getItem("taskList"))
     if (getLocalTaskList != null) {
         taskList = getLocalTaskList;
@@ -95,21 +96,25 @@ function taskTemplate(taskStatus, taskName, taskStartDate, taskEndDate, taskEdit
     }
     // Dates
     const startDate = document.createElement("span");
-    if(taskEditDate != 0){
-        startDate.innerText = generateDate();
-    }
-    else {
-    startDate.innerText = tasksDate(taskStartDate)
+    if (taskEditDate == 0) {
+        startDate.innerText = `Created: ${tasksDate(taskStartDate)}`;
+    } else {
+        startDate.innerText = `${generateDate(taskStartDate)}`
     }
     startDate.classList.add("date-of-creation");
     taskContainer.appendChild(startDate);
 
     const endDate = document.createElement("span");
     endDate.classList.add("end-of-creation")
-    endDate.innerText = tasksDate(taskEndDate)
+    if (taskEndDate == 0) {
+        endDate.innerText = ""
+    } else {
+        endDate.innerText = `Expiry date: ${tasksDate(taskEndDate)}`
+    }
+
     taskContainer.appendChild(endDate)
 
-    
+
 
     const timeToEnd = document.createElement("span")
     timeToEnd.classList.add("time-to-end");

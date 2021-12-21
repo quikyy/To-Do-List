@@ -74,6 +74,16 @@ body {
     border-radius: 5px;
 }
 
+.alert{
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%);
+    height: 80px;
+    width: 450px;
+    border: 1px solid black;
+    border-radius: 10px;
+}
 
 .controler {
     position: relative;
@@ -110,6 +120,10 @@ body {
 .userInput:focus,
 input:focus {
     outline: none;
+}
+
+.userInput::-webkit-input-placeholder{
+    font-size: 13px;
 }
 
 

@@ -33,6 +33,9 @@ function clearTasks() {
 }
 
 function setDefualt() {
+    let x = Math.floor(Math.random() * task_input_placeholders.length);
+    console.log(x)
+    taskNameInput1.placeholder = task_input_placeholders[x]
     taskNameInput1.value = ""
     taskEndInput1.value = ""
     controler.classList.remove("controlerGrow")
