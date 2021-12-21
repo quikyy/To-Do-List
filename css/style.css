@@ -15,7 +15,7 @@
     --transition: 0.2s ease-in-out;
 
     /* overlay */
-    --overlayColor:  #00111c9e;
+    --overlayColor: #00111c9e;
     /* add / clear */
     --addClearSize: 1.4em;
     --addColor: #023e8a;
@@ -140,23 +140,24 @@ input:focus {
     transform: translateY(3px);
 }
 
-.end_task{
+.end_task {
     display: flex;
     height: 40px;
     width: 100%;
     align-items: center;
-    justify-content: center;
     border-top: #023d8a21 1px solid;
-    
+
 }
+
 .end_task span {
     font-size: 1.2em;
     color: wheat;
 }
+
 .date_end {
     cursor: pointer;
     border: transparent;
-    width: 60%;
+    width: 25%;
     text-align: center;
     color: white;
     background-color: transparent;
@@ -179,7 +180,7 @@ ul {
     position: relative;
     display: flex;
     align-items: center;
-    height: 70px;
+    height: 75px;
     width: 95%;
     /* margin-top: 15px; */
     margin: 10px auto;
@@ -219,7 +220,7 @@ ul {
 .newDivContainer .mark-button {
     margin-right: 10px;
     margin-left: 10px;
-    color: var(--markColor);
+    color: white;
 }
 
 .newDivContainer .remove-button {
@@ -245,14 +246,15 @@ ul {
     transition: 0.4s ease-in-out;
 }
 
-.newDivContainer .remove-button i:hover , .edit-button i:hover {
+.newDivContainer .remove-button i:hover,
+.edit-button i:hover {
     color: var(--markColor);
 }
 
 
 .date-of-creation {
     position: absolute;
-    bottom: 2px;
+    top: 2px;
     left: 10px;
     letter-spacing: 1px;
     opacity: 0.4;
@@ -266,9 +268,9 @@ ul {
     opacity: 0.4;
 }
 
-.time-to-end{
+.time-to-end {
     position: absolute;
-    top: 2px;
+    bottom: 2px;
     left: 10px;
     letter-spacing: 1px;
     opacity: 0.4;
@@ -306,11 +308,14 @@ ul {
     font-size: 1.1em;
     cursor: pointer;
     color: white;
+    transition: 0.3s;
 }
 
 .activeView {
-    
+    opacity: 1;
 }
+
+
 
 .clear-btn {
     right: 10px;
@@ -323,8 +328,4 @@ ul {
     cursor: pointer;
     transition: var(--transition);
     color: white;
-}
-
-.clear-btn:hover {
-    color: var(--addColor);
 }
