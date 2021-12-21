@@ -118,29 +118,7 @@ function taskTemplate(taskStatus, taskName, taskStartDate, taskEndDate, taskEdit
     updateSummary();
 }
 
-function tasksDate(type) {
-    let text;
-    if(type != 0){
-    type = type.toString();
-    let year = type.slice(0, 4)
-    let month = parseInt(type.slice(5, 7))
-    month = monthsList[month]
-    let day = type.slice(8, 10)
-    let hour = type.slice(11, 13)
-    let minutes = type.slice(14, 16)
-    return text = `Created: ${day} ${month} ${year}, ${hour}:${minutes}`
-    }
-    else {
-        return text = ""
-    }
-}
 
-
-function setDefualt() {
-    taskNameInput1.value = ""
-    taskEndInput1.value = ""
-    controler.classList.remove("controlerGrow")
-}
 
 
 

@@ -46,6 +46,24 @@ function compareDates(x) {
     return infoText = (`Time left: ${days} days ${hours} hours ${mins} minutes ${sec} secs`)
 }
 
+function tasksDate(type) {
+    let text;
+    if(type != 0){
+    type = type.toString();
+    let year = type.slice(0, 4)
+    let month = parseInt(type.slice(5, 7))
+    month = monthsList[month]
+    let day = type.slice(8, 10)
+    let hour = parseInt(type.slice(11, 13))
+    let minutes = type.slice(14, 16)
+    return text = `Created: ${day} ${month} ${year}, ${hour + 1}:${minutes}`
+    }
+    else {
+        return text = ""
+    }
+}
+
+
 function seeEndTime(e) {
     // if (e.target.classList.contains("end-of-creation")) {
     //     let taskContainer = e.target.parentNode;

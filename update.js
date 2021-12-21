@@ -31,3 +31,9 @@ function clearTasks() {
     ulList.innerText = ""
     updateSummary();
 }
+
+function setDefualt() {
+    taskNameInput1.value = ""
+    taskEndInput1.value = ""
+    controler.classList.remove("controlerGrow")
+}
